@@ -7,7 +7,7 @@ export default {
   collaborator: 'Yeqin Gong',
   image: featureImage,
   icon: iconImage,
-  tags: ['blocks', 'dupont', 'actuator', '3v3', '5v', 'motor'],
+  tags: ['blocks', 'dupont', 'pwm', '3v3', '5v', 'actuator', 'motor'],
   dupontRequired: true,
 
   // l10n

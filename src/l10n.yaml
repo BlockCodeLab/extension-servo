@@ -5,6 +5,7 @@ en:
   extension.servo.motor: set PIN [PIN] 360° servo rotate [ROTATE]
   extension.servo.motorClockwise: clockwise
   extension.servo.motorAnticlockwise: anticlockwise
+  extension.servo.motorStop: stop
 
 zh-Hans:
   extension.servo.name: 舵机
@@ -13,3 +14,4 @@ zh-Hans:
   extension.servo.motor: 将引脚 [PIN] 360° 舵机转向设为 [ROTATE]
   extension.servo.motorClockwise: 顺时针
   extension.servo.motorAnticlockwise: 逆时针
+  extension.servo.motorStop: 停止

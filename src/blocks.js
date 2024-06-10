@@ -1,17 +1,7 @@
 import { Text } from '@blockcode/ui';
 import translations from './l10n.yaml';
 import iconURI from './icon.png';
-
-function provideSetServoFunction() {
-  this.definitions_['from_machine_import_pin'] = 'from machine import Pin';
-  this.definitions_['from_machine_import_pwm'] = 'from machine import PWM';
-  return this.provideFunction_('set_servo', [
-    `def ${this.FUNCTION_NAME_PLACEHOLDER_}(pin, ms=0, angle=None, max_angle=180):`,
-    '  if angle != None:',
-    '    ms = 1.5 - angle / max_angle',
-    '  PWM(Pin(pin), freq=50).duty_u16(int(ms / 20 * 65535))',
-  ]);
-}
+import servoPyURI from './servo.py';
 
 export default {
   iconURI,
@@ -21,37 +11,14 @@ export default {
       defaultMessage="Servo"
     />
   ),
-  blocks: [
+  files: [
     {
-      id: 'set_90servo',
-      text: (
-        <Text
-          id="extension.servo.90servo"
-          defaultMessage="set PIN [PIN] 90° servo angle to [ANGLE]°"
-        />
-      ),
-      inputs: {
-        PIN: {
-          type: 'number',
-          default: 0,
-        },
-        ANGLE: {
-          type: 'angle',
-          default: 0,
-        },
-      },
-      python(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const functionName = provideSetServoFunction.call(this);
-        const pinCode = this.valueToCode(block, 'PIN', this.ORDER_NONE) || '0';
-        const angleCode = this.valueToCode(block, 'ANGLE', this.ORDER_NONE) || '0';
-        code += `${functionName}(${pinCode}, angle=${angleCode}, max_angle=90)\n`;
-        return code;
-      },
+      name: 'servo',
+      type: 'text/x-python',
+      uri: servoPyURI,
     },
+  ],
+  blocks: [
     {
       id: 'set_180servo',
       text: (
@@ -71,18 +38,47 @@ export default {
         },
       },
       python(block) {
+        this.definitions_['import_extension_servo'] = 'from extensions.servo import servo';
         let code = '';
         if (this.STATEMENT_PREFIX) {
           code += this.injectId(this.STATEMENT_PREFIX, block);
         }
-        const functionName = provideSetServoFunction.call(this);
         const pinCode = this.valueToCode(block, 'PIN', this.ORDER_NONE) || '0';
         const angleCode = this.valueToCode(block, 'ANGLE', this.ORDER_NONE) || '0';
-        code += `${functionName}(${pinCode}, angle=${angleCode}, max_angle=180)\n`;
+        code += `servo.set_angle(num(${pinCode}), num(${angleCode}))\n`;
         return code;
       },
     },
-    '---',
+    {
+      id: 'set_90servo',
+      text: (
+        <Text
+          id="extension.servo.90servo"
+          defaultMessage="set PIN [PIN] 90° servo angle to [ANGLE]°"
+        />
+      ),
+      inputs: {
+        PIN: {
+          type: 'number',
+          default: 0,
+        },
+        ANGLE: {
+          type: 'angle',
+          default: 0,
+        },
+      },
+      python(block) {
+        this.definitions_['import_extension_servo'] = 'from extensions.servo import servo';
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const pinCode = this.valueToCode(block, 'PIN', this.ORDER_NONE) || '0';
+        const angleCode = this.valueToCode(block, 'ANGLE', this.ORDER_NONE) || '0';
+        code += `servo.set_angle(num(${pinCode}), num(${angleCode}), angle=90)\n`;
+        return code;
+      },
+    },
     {
       id: 'set_motor',
       text: (
@@ -98,34 +94,41 @@ export default {
         },
         ROTATE: {
           type: 'number',
-          default: '2',
+          default: '1',
           menu: [
             [
               <Text
                 id="extension.servo.motorClockwise"
                 defaultMessage="clockwise"
               />,
-              '2',
+              '1',
             ],
             [
               <Text
                 id="extension.servo.motorAnticlockwise"
                 defaultMessage="anticlockwise"
               />,
-              '1',
+              '-1',
+            ],
+            [
+              <Text
+                id="extension.servo.motorStop"
+                defaultMessage="stop"
+              />,
+              '0',
             ],
           ],
         },
       },
       python(block) {
+        this.definitions_['import_extension_servo'] = 'from extensions.servo import servo';
         let code = '';
         if (this.STATEMENT_PREFIX) {
           code += this.injectId(this.STATEMENT_PREFIX, block);
         }
-        const functionName = provideSetServoFunction.call(this);
         const pinCode = this.valueToCode(block, 'PIN', this.ORDER_NONE) || '0';
-        const rotateCode = block.getFieldValue('ROTATE') || '2';
-        code += `${functionName}(${pinCode}, ${rotateCode})\n`;
+        const rotateCode = block.getFieldValue('ROTATE') || '0';
+        code += `servo.set_motor(num(${pinCode}), num(${rotateCode}))\n`;
         return code;
       },
     },
