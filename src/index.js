@@ -2,13 +2,13 @@ import featureImage from './feature.png';
 import iconImage from './icon.png';
 
 export default {
+  hidden: true,
   name: 'Servo',
   description: 'Standard servo module.',
   collaborator: 'Yeqin Gong',
   image: featureImage,
   icon: iconImage,
-  tags: ['blocks', 'dupont', 'pwm', '3v3', '5v', 'actuator', 'motor'],
-  dupontRequired: true,
+  tags: ['blocks', 'actuator'],
 
   // l10n
   translations: {
