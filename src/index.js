@@ -5,7 +5,6 @@ export default {
   hidden: true,
   name: 'Servo',
   description: 'Standard servo module.',
-  collaborator: 'Yeqin Gong',
   image: featureImage,
   icon: iconImage,
   tags: ['blocks', 'actuator'],
@@ -15,12 +14,10 @@ export default {
     en: {
       name: 'Servo',
       description: 'Standard servo module.',
-      collaborator: 'Yeqin Gong',
     },
     'zh-Hans': {
       name: '舵机',
       description: '通用舵机模块。',
-      collaborator: '龚业勤',
     },
   },
 };
