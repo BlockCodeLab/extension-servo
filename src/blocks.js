@@ -30,7 +30,7 @@ export default {
       inputs: {
         PIN: {
           type: 'number',
-          default: 0,
+          default: 1,
         },
         ANGLE: {
           type: 'angle',
@@ -60,7 +60,7 @@ export default {
       inputs: {
         PIN: {
           type: 'number',
-          default: 0,
+          default: 1,
         },
         ANGLE: {
           type: 'angle',
@@ -90,7 +90,7 @@ export default {
       inputs: {
         PIN: {
           type: 'number',
-          default: 0,
+          default: 1,
         },
         ROTATE: {
           type: 'number',
